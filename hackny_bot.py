@@ -17,9 +17,9 @@ def crawl():
     r = reddit.Reddit("acid-trip-bot v.0.1 alpha release")
     r.login("acid-trip-bot","hackny")
          
-#   f = open("subreddits.txt")
-#   for sub in f.read().split()[240:290]:
-    get_threads('wtf', r)
+    f = open("subreddits.txt")
+    for sub in f.read().split()[340:490]:
+        get_threads(sub, r)
    
 def get_threads(sub, r):
     submissions = r.get_subreddit(sub).get_top(limit=40)
@@ -136,7 +136,7 @@ def respond(permalink, text):
     read = json.dumps(req_open.read())
 
 if __name__ == "__main__":
-    count()
+
     print '''
                                                                                 
                                                                                 
