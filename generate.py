@@ -31,7 +31,8 @@ def gen(seed, subreddits = None):
         suff = get_suffix(seed, subreddits)
     else:
         suff = get_suffix(seed)
-    while (suff is not None and len(comment.split()) < rando) or nltk.pos_tag([suff])[0][1][0] in ["I","C"]:
+    while (suff is not None and len(comment.split()) < rando):
+    #or nltk.pos_tag([suff])[0][1][0] in ["I","C"]:
         print comment
         comment += " " + suff
         seed = " ".join(comment.split()[-2:])
