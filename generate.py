@@ -19,6 +19,7 @@ QUESTION_WORDS = ["what",
                   "was"]
 
 def gen(seed):
+    #return markov_concat(seed, seed)
     rando = random.randint(12,20)
     comment = seed
     suff = get_suffix(seed)
@@ -29,8 +30,16 @@ def gen(seed):
         seed = " ".join(comment.split()[-2:])
         suff = get_suffix(seed)
     return prettify(comment)
-    
 
+def markov_concat(comment, seed):
+    suffix = get_suffix(seed)
+    if suffix is None or len(comment.split()) >= 10: #max=10
+        return comment
+    else:
+        comment += " %s" % suffix
+        suffix = " ".join(comment.split()[-2:])
+        return markov_concat(comment, suffix)
+    
 def get_suffix(prefix):
     connection = pymongo.Connection('localhost', 27017)
     db = connection.new_database
