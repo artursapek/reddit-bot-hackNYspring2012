@@ -201,8 +201,10 @@ if __name__ == "__main__":
                                                                                 
     '''
         if len(sys.argv) > 4:
+            print 'subreddit'
             confirm(seed, sys.argv[4:])
         else:
+            print 'nope'
             confirm(seed, None)
     else:
         print "Usage: python hackny_bot.py <url> <seed1> <seed2>"
