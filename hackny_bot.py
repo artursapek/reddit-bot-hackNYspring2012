@@ -81,7 +81,7 @@ def read_db():
     for i, x in enumerate(collection.find()):
         print x
 
-def test():
+def count():
     search = collection.find()
     print search.count()
 
@@ -127,17 +127,16 @@ def respond(permalink, text):
     req_open = urlopen(req)
     read = json.loads(req_open.read())
 
-    print read, type(read)
-
     modhash = read['json']['data']['modhash']
 
     # POST THE FUCKING COMMENT
     req = Request('http://www.reddit.com/api/comment', encode({'thing_id': thing_id, 'text': text + '\n\n*This is an automated response.*', 'uh': modhash}), {'User-Agent': user_agent})
     req_open = urlopen(req)
-    read = req_open.read()
-    print read
+    read = json.dumps(req_open.read())
 
 if __name__ == "__main__":
+    count()
+else:
     print '''
                                                                                 
                                                                                 
