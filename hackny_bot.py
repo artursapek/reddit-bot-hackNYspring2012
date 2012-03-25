@@ -5,6 +5,7 @@ from mechanize import Browser
 from BeautifulSoup import BeautifulSoup
 import urllib2, urllib
 import cookielib
+import json
 
 connection = pymongo.Connection('localhost', 27017)
 db = connection.new_database
@@ -95,6 +96,7 @@ def respond(permalink):
 
     urlopen = urllib2.urlopen
     Request = urllib2.Request
+    encode = urllib.urlencode
     cj = cookielib.LWPCookieJar()
 
     opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
@@ -105,12 +107,19 @@ def respond(permalink):
     print 'thing_id', thing_id
 
     # LOG THE FUCK IN
-    req = Request('http://www.reddit.com/api/login/username', urllib.urlencode({'user': 'acid-trip-bot', 'passwd': 'hackny', 'api_type': 'json'}), {'User-Agent': user_agent})
+    req = Request('http://www.reddit.com/api/login/username', encode({'user': 'acid-trip-bot', 'passwd': 'hackny', 'api_type': 'json'}), {'User-Agent': user_agent})
+    req_open = urlopen(req)
+    read = json.loads(req_open.read())
+
+    print read, type(read)
+
+    modhash = read['json']['data']['modhash']
+
+    # POST THE FUCKING COMMENT
+    req = Request('http://www.reddit.com/api/comment', encode({'thing_id': thing_id, 'text': 'YO WHATS GOOD?', 'uh': modhash}), {'User-Agent': user_agent})
     req_open = urlopen(req)
     read = req_open.read()
     print read
-
-
 
 if __name__ == "__main__":
     respond('http://www.reddit.com/r/funny/comments/pa3dh/woody_harrelsons_publicist/c3nqfnv')
