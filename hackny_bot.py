@@ -6,6 +6,7 @@ from BeautifulSoup import BeautifulSoup
 import urllib2, urllib
 import cookielib
 import json
+import generate
 
 connection = pymongo.Connection('localhost', 27017)
 db = connection.new_database
@@ -14,12 +15,13 @@ collection = db.comments
 def crawl():
     r = reddit.Reddit("acid-trip-bot v.0.1 alpha release")
     r.login("acid-trip-bot","hackny")
+    
     f = open("subreddits.txt")
-    for sub in f.read().split()[100:140]:
+    for sub in f.read().split()[300:340]:
         get_threads(sub, r)
    
 def get_threads(sub, r):
-    submissions = r.get_subreddit(sub).get_top(limit=10)
+    submissions = r.get_subreddit(sub).get_top(limit=40)
     try:
         s = submissions.next()
     except StopIteration:
@@ -87,7 +89,7 @@ def drop_db():
 
 # Reddit functions
 
-def respond(permalink):
+def respond(permalink, text):
     br = Browser()
     user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/14.0.835.202 Safari/535.1'
     br.addheaders = [('User-agent', user_agent)]
@@ -116,11 +118,13 @@ def respond(permalink):
     modhash = read['json']['data']['modhash']
 
     # POST THE FUCKING COMMENT
-    req = Request('http://www.reddit.com/api/comment', encode({'thing_id': thing_id, 'text': 'YO WHATS GOOD?', 'uh': modhash}), {'User-Agent': user_agent})
+    req = Request('http://www.reddit.com/api/comment', encode({'thing_id': thing_id, 'text': text + '\n\n*This is an automated response.*', 'uh': modhash}), {'User-Agent': user_agent})
     req_open = urlopen(req)
     read = req_open.read()
     print read
 
 if __name__ == "__main__":
-    respond('http://www.reddit.com/r/funny/comments/pa3dh/woody_harrelsons_publicist/c3nqfnv')
+    crawl()
+#    comment = generate.gen('do you')
+#    respond('http://www.reddit.com/r/funny/comments/rc7h4/friend_got_owned_by_our_mayor_on_twitter/c44oatb', comment)
 
