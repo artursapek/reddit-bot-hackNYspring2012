@@ -90,6 +90,19 @@ def drop_db():
 
 # Reddit functions
 
+def confirm(seed):
+    comment = generate.gen(seed)
+    print comment
+    yn = raw_input("Wanna post this shit? Y/N: ")
+    if yn.lower() == "y":
+        respond(sys.argv[1], comment)
+    else:
+        new_seed = raw_input("New seed? (blank=same) ")
+        if len(new_seed.split()) == 2:
+            confirm(new_seed)
+        else:
+            confirm(seed)
+
 def respond(permalink, text):
     br = Browser()
     user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/14.0.835.202 Safari/535.1'
@@ -150,16 +163,7 @@ if __name__ == "__main__":
     if len(sys.argv) == 4:
         #crawl()
         seed = sys.argv[2]+" "+sys.argv[3]
-        comment = generate.gen(seed)
-        print comment
-        yn = raw_input("Wanna post this shit? Y/N: ")
-        if yn.lower() == "y":
-            respond(sys.argv[1], comment)
-        else:
-            new_seed = raw_input("New seed? (blank=same) ")
-            if len(new_seed.split()) == 2:
-                comment = generate.gen(new_seed)
-            else:
-                comment = generate.gen(seed)
+        confirm(seed)
     else:
         print "Usage: python hackny_bot.py <url> <seed1> <seed2>"
+
