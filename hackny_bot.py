@@ -12,11 +12,11 @@ def run():
     r = reddit.Reddit("acid-trip-bot v.0.1 alpha release")
     r.login("acid-trip-bot","hackny")
     f = open("subreddits.txt")
-    for sub in f.read().split()[0:5]:
+    for sub in f.read().split()[0:20]:
         get_threads(sub, r)
    
 def get_threads(sub, r):
-    submissions = r.get_subreddit(sub).get_top(limit=5)
+    submissions = r.get_subreddit(sub).get_top(limit=10)
     try:
         s = submissions.next()
     except StopIteration:
@@ -33,23 +33,30 @@ def process_comments(com):
     if 'body' in com.__dict__.keys():
         if com.body == "":
             return
-        print com.body
-
         try:
-            add_to_db(markovify(com.body))
+            entries = markovify(sanitize_comment(com.body))
+            print entries
+            for entry in entries:
+                if collection.find({'prefix': entry['prefix'], 'suffix': entry['suffix']}).count() == 0 and len(entry['prefix']) + len(entry['suffix']) < 40:
+                    add_to_db(entry)
+                    print '.'
+                else:
+                    print 'OMITTED'
         except:
             pass
     else:
-        print (process_comments(com.comments))
+        print 'shit'
 
 def markovify(body):
+    dicts = [ ]
     words = body.split()
     for i in xrange(0,len(words)-1):
         if i == len(words) - 2:
             new_markov = {'prefix':words[i]+" "+words[i+1], 'suffix': None}
         else: 
             new_markov = {'prefix':words[i]+" "+words[i+1], 'suffix': words[i+2]}
-        return new_markov
+        dicts.append(new_markov)
+    return dicts
 
 def add_to_db(post):
     collection.insert(post)
@@ -70,13 +77,13 @@ def read_db():
     for i, x in enumerate(collection.find()):
         print x
 
+def test():
+    search = collection.find()
+    print search.count()
+
 def drop_db():
     collection.drop()
 
 if __name__ == "__main__":
-    run()
+    test()
 
-    collection.drop()
-
-if __name__ == "__main__":
-    run()
