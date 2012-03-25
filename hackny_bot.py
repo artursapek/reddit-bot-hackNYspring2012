@@ -3,7 +3,8 @@ import pymongo
 import re
 from mechanize import Browser
 from BeautifulSoup import BeautifulSoup
-import urllib2
+import urllib2, urllib
+import cookielib
 
 connection = pymongo.Connection('localhost', 27017)
 db = connection.new_database
@@ -87,16 +88,30 @@ def drop_db():
 
 def respond(permalink):
     br = Browser()
-    br.addheaders = [('User-agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/14.0.835.202 Safari/535.1')]
+    user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/14.0.835.202 Safari/535.1'
+    br.addheaders = [('User-agent', user_agent)]
+
     soup = BeautifulSoup(br.open(permalink).read())
+
+    urlopen = urllib2.urlopen
+    Request = urllib2.Request
+    cj = cookielib.LWPCookieJar()
+
+    opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
+    urllib2.install_opener(opener)
+
     root_comment = soup.find('form', attrs={'class': 'usertext border'})
     thing_id = root_comment.find('input', attrs={'name': 'thing_id'})['value']
+    print 'thing_id', thing_id
 
-    print thing_id
+    # LOG THE FUCK IN
+    req = Request('http://www.reddit.com/api/login/username', urllib.urlencode({'user': 'acid-trip-bot', 'passwd': 'hackny', 'api_type': 'json'}), {'User-Agent': user_agent})
+    req_open = urlopen(req)
+    read = req_open.read()
+    print read
 
-    login_cookie = urllib2.Request('www.reddit.com/api/login/username', {'user': 'acid-trip-bot', 'passwd': 'hackny'})
+
 
 if __name__ == "__main__":
-#    crawl()
     respond('http://www.reddit.com/r/funny/comments/pa3dh/woody_harrelsons_publicist/c3nqfnv')
 
