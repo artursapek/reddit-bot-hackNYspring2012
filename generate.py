@@ -20,12 +20,13 @@ QUESTION_WORDS = ["what",
                   "would",
                   "will",
                   "is",
-                  "was",]
+                  "was",
+                  'can']
 
 def gen(seed, subreddits = None):
     #return markov_concat(seed, seed)
     print subreddits
-    rando = random.randint(12,20)
+    rando = random.randint(14,20)
     comment = seed
     if subreddits:
         suff = get_suffix(seed, subreddits)
