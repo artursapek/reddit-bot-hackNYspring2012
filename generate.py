@@ -42,4 +42,4 @@ def get_suffix(prefix):
 def prettify(comment):
     if comment.split()[0].lower() in QUESTION_WORDS:
         comment += "?"
-    return comment[0].capitalize()[0] + comment[1:].lower()
+    return comment
