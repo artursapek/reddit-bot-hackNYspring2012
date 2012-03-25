@@ -127,10 +127,17 @@ def respond(permalink, text):
 if __name__ == "__main__":
     if len(sys.argv) == 4:
         #crawl()
-        comment = generate.gen(sys.argv[2]+" "+sys.argv[3])
+        seed = sys.argv[2]+" "+sys.argv[3]
+        comment = generate.gen(seed)
         print comment
         yn = raw_input("Wanna post this shit? Y/N: ")
         if yn.lower() == "y":
             respond(sys.argv[1], comment)
+        else:
+            new_seed = raw_input("New seed? (blank=same) ")
+            if len(seed.split()) == 2:
+                comment = generate.gen(new_seed)
+            else:
+                comment = generate.gen(seed)
     else:
         print "Usage: python hackny_bot.py <url> <seed1> <seed2>"
