@@ -18,7 +18,7 @@ def crawl():
     r.login("acid-trip-bot","hackny")
     
     f = open("subreddits.txt")
-    for sub in f.read().split()[300:340]:
+    for sub in f.read().split()[240:290]:
         get_threads(sub, r)
    
 def get_threads(sub, r):
@@ -126,7 +126,6 @@ def respond(permalink, text):
 
 if __name__ == "__main__":
     print '''
-                                                                                
                                                                                 
                                                                                 
           MMMMMMM7              .MMMMMM.      NMMMMMM     ZMMMMMMMN             
