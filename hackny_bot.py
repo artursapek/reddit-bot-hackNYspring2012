@@ -125,6 +125,28 @@ def respond(permalink, text):
     print read
 
 if __name__ == "__main__":
+    print '''
+                                                                                
+                                                                                
+                                                                                
+          MMMMMMM7              .MMMMMM.      NMMMMMM     ZMMMMMMMN             
+       .MMMMMMMMMMM.          .MMMMMMMMMMMM  MMMMMMMMM   MMMMMMMMMMMMMM..       
+         MMMMMMMMMMM.        8MMMMMMMMMMMMM.  MMMMMMM   . MMMMMMM. MMMMMM.      
+         MMMMMMMMMMM.      .MMMMMMMM.  MMMM    MMMMMM      MMMMMM   MMMMMM      
+         MMM,..MMMMMM       MMMMMM,    .MM8.  .MMMMM=      MMMMMM   .MMMMMM     
+         MMM   MMMMMM.     MMMMMMM            .MMMMM.      MMMMMM   .MMMMMM     
+        .MMMMMMMMMMMM.     MMMMMMM            ,MMMMMM      MMMMMM   .MMMMMM .   
+       .MMMMMMMMMMMMMM     MMMMMMM.     MM    MMMMMMM.    .MMMMMM    MMMMMM7.   
+        MMM=    MMMMMMO    MMMMMMMMMMMMMMMM. .MMMMMMM.     MMMMMM   MMMMMMM+    
+       MMMM     MMMMMMM .  MMMMMMMMMMMMMMMM. .MMMMMMM$    ~MMMMMMMMMMMMMMMM     
+     .MMMMM.    MMMMMMMM.. 8MMMMMMMMMMMMMMM  :MMMMMMMM    MMMMMMMMMMMMMMMMM     
+   .~MMMMMMM   MMMMMMMMMM.  MMMMMMMMMMMMMMM  MMMMMMMMMM.. MMMMMMMMMMMMMMMM      
+   MMMMMMMMMM  MMMMMMMMMMM   ZMMMMMMMMMMMM: MMMMMMMMMMM7?MMMMMMMMMMMMMMMM       
+  .MMMMMMMMMM  MMMMMMMMMM     .MMMMMMMMMM   MMMMMMMMMMM MMMMMMMMMMMMMMMM .      
+      I87~      ..7OI. .          .  .       .~DMMMM7 .    IMMMMMMMZ.           
+                                                                                
+                                                                                
+    '''
     if len(sys.argv) == 4:
         #crawl()
         seed = sys.argv[2]+" "+sys.argv[3]
