@@ -7,6 +7,7 @@ import urllib2, urllib
 import cookielib
 import json
 import generate
+import sys
 
 connection = pymongo.Connection('localhost', 27017)
 db = connection.new_database
@@ -124,7 +125,9 @@ def respond(permalink, text):
     print read
 
 if __name__ == "__main__":
-    crawl()
-#    comment = generate.gen('do you')
-#    respond('http://www.reddit.com/r/funny/comments/rc7h4/friend_got_owned_by_our_mayor_on_twitter/c44oatb', comment)
-
+    if len(sys.argv) == 4:
+        #crawl()
+        comment = generate.gen(sys.argv[2]+" "+sys.argv[3])
+        respond(sys.argv[1], comment)
+    else:
+        print "Usage: python hackny_bot.py <url> <seed1> <seed2>"
