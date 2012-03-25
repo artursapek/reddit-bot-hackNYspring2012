@@ -53,6 +53,9 @@ def markovify(body):
 def add_to_db(post):
     collection.insert(post)
 
+def generate_sentence(subject):
+    
+
 # Reddit functions
 
 if __name__ == "__main__":
