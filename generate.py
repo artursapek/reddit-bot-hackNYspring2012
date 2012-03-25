@@ -45,15 +45,26 @@ def prettify(comment):
         comment += "?"
     return comment[0].capitalize() + comment[1:].lower()
 
+def punctuate(comment):
+    words = comment.split()
+    comment = ''
+    for x in words:
+        if random.choice([True, False, False, False, False, False]):
+            comment += ' %s ' % (random.choice(['!!!', '.', '...', '??']) + x)
+        else:
+            comment += ' %s' % x
+    return comment
+            
 
-
-def exasperation():
+def exasperation(): # some weird bullshit
     no_vowels = random.choice(range(1, 3))
     no_consonants = random.choice(range(3, 10))
     vow = 'aeiou'
     cons = 'bcdfghjklmnpqrtvwxz'
-    chosen_cons = random.choice(cons.split(''))
-    chosen_vow = random.choice(vow.split(''))
+    chosen_cons = random.choice([x for x in cons])
+    chosen_vow = random.choice([x for x in vow])
+    exasp = chosen_vow*no_vowels + chosen_cons*no_consonants
+    return exasp
 
 
 
