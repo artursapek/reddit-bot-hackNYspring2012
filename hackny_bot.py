@@ -19,7 +19,7 @@ def crawl():
          
 #   f = open("subreddits.txt")
 #   for sub in f.read().split()[240:290]:
-    get_threads('4chan', r)
+    get_threads('wtf', r)
    
 def get_threads(sub, r):
     submissions = r.get_subreddit(sub).get_top(limit=40)
