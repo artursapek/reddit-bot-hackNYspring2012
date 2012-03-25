@@ -47,18 +47,11 @@ def markovify(body):
         else: 
             new_markov = {'prefix':words[i]+" "+words[i+1], 'suffix': words[i+2]}
         print new_markov
-        
 
 def add_to_db(post):
     collection.insert(post)
 
 # Reddit functions
-
-def generate_comment(seed):
-    comment = seed
-    collection = db.comments
-    while suffs is not None:
-        suffs = collection.find({prefix: seed})
 
 if __name__ == "__main__":
     run()
