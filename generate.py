@@ -16,22 +16,23 @@ QUESTION_WORDS = ["what",
                   "would",
                   "will",
                   "is",
-                  "was"]
+                  "was",]
 
 def gen(seed, subreddits = None):
     #return markov_concat(seed, seed)
+    print subreddits
     rando = random.randint(12,20)
     comment = seed
-    if subreddit:
-        suff = get_suffix(seed)
-    else:
+    if subreddits:
         suff = get_suffix(seed, subreddits)
+    else:
+        suff = get_suffix(seed)
     while suff is not None and len(comment.split()) < rando:
 	print comment
         print
         comment += " " + suff
         seed = " ".join(comment.split()[-2:])
-        suff = get_suffix(seed)
+        suff = get_suffix(seed, subreddits)
     return prettify(comment)
 
 def markov_concat(comment, seed):
@@ -48,11 +49,13 @@ def get_suffix(prefix, subreddits = None):
     db = connection.new_database
     collection = db.comments
     if subreddits:
-        query = {"prefix": prefix, "subreddit":{$in: subreddits}}
+        print subreddits
+        query = {"prefix": prefix, "subreddit":{"$in": subreddits}}
         suffs = collection.find(query).distinct("suffix")
     else:
         suffs = collection.find({"prefix": prefix}).distinct("suffix")
     if len(suffs) == 0:
+        print 'nada'
         return None
     return random.choice(suffs)
 
