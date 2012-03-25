@@ -19,7 +19,7 @@ QUESTION_WORDS = ["what",
                   "was"]
 
 def gen(seed):
-    rando = random.randint(12,20)
+    rando = random.randint(8,14)
     comment = seed
     suff = get_suffix(seed)
     while suff is not None and len(comment.split()) < rando:
