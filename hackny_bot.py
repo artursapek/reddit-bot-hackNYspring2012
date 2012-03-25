@@ -19,7 +19,7 @@ def crawl():
          
 #   f = open("subreddits.txt")
 #   for sub in f.read().split()[240:290]:
-    get_threads('4chan', r)
+    get_threads('wtf', r)
    
 def get_threads(sub, r):
     submissions = r.get_subreddit(sub).get_top(limit=40)
@@ -93,7 +93,6 @@ def drop_db():
 
 def confirm(seed, subreddit = None):
     comment = generate.gen(seed, subreddit)
-    print comment
     yn = raw_input("Wanna post this shit? Y/N: ")
     if yn.lower() == "y":
         respond(sys.argv[1], comment)
@@ -157,7 +156,7 @@ if __name__ == "__main__":
                                                                                 
                                                                                 
     '''
-    if len(sys.argv) == 5:
+    if len(sys.argv) == 4:
         seed = sys.argv[2]+" "+sys.argv[3]
         if sys.argv[4] == '4chan':
             print '''

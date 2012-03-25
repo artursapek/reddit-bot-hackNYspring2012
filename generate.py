@@ -2,6 +2,10 @@ import pymongo
 import random
 import string
 
+connection = pymongo.Connection('localhost', 27017)
+db = connection.new_database
+collection = db.comments
+
 QUESTION_WORDS = ["what",
                   "where",
                   "who",
@@ -23,15 +27,14 @@ def gen(seed, subreddit = None):
     rando = random.randint(12,20)
     comment = seed
     if subreddit:
-        suff = get_suffix(seed)
-    else:
         suff = get_suffix(seed, subreddit)
+    else:
+        suff = get_suffix(seed)
     while suff is not None and len(comment.split()) < rando:
-	print comment
-        print
+        print comment
         comment += " " + suff
         seed = " ".join(comment.split()[-2:])
-        suff = get_suffix(seed)
+        suff = get_suffix(seed, subreddit)
     return prettify(comment)
 
 def markov_concat(comment, seed):
@@ -44,12 +47,8 @@ def markov_concat(comment, seed):
         return markov_concat(comment, suffix)
     
 def get_suffix(prefix, subreddit = None):
-    connection = pymongo.Connection('localhost', 27017)
-    db = connection.new_database
-    collection = db.comments
     if subreddit:
-        query = {"prefix": prefix, "subreddit":subreddit}
-        suffs = collection.find(query).distinct("suffix")
+        suffs = collection.find({"prefix": prefix, "subreddit": subreddit}).distinct("suffix")
     else:
         suffs = collection.find({"prefix": prefix}).distinct("suffix")
     if len(suffs) == 0:
