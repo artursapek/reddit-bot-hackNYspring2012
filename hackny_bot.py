@@ -128,6 +128,7 @@ if __name__ == "__main__":
     if len(sys.argv) == 4:
         #crawl()
         comment = generate.gen(sys.argv[2]+" "+sys.argv[3])
+        print comment
         yn = raw_input("Wanna post this shit? Y/N: ")
         if yn.lower() == "y":
             respond(sys.argv[1], comment)
