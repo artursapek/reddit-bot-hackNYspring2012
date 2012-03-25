@@ -16,9 +16,9 @@ collection = db.comments
 def crawl():
     r = reddit.Reddit("acid-trip-bot v.0.1 alpha release")
     r.login("acid-trip-bot","hackny")
-    
-#    f = open("subreddits.txt")
-#    for sub in f.read().split()[240:290]:
+         
+#   f = open("subreddits.txt")
+#   for sub in f.read().split()[240:290]:
     get_threads('4chan', r)
    
 def get_threads(sub, r):
@@ -91,8 +91,8 @@ def drop_db():
 
 # Reddit functions
 
-def confirm(seed):
-    comment = generate.gen(seed)
+def confirm(seed, subreddit = None):
+    comment = generate.gen(seed, subreddit)
     print comment
     yn = raw_input("Wanna post this shit? Y/N: ")
     if yn.lower() == "y":
@@ -200,7 +200,7 @@ if __name__ == "__main__":
                                                                                 
                                                                                 
     '''
-        confirm(seed)
+        confirm(seed, sys.argv[4])
     else:
         print "Usage: python hackny_bot.py <url> <seed1> <seed2>"
 
