@@ -136,10 +136,6 @@ def respond(permalink, text):
     read = json.dumps(req_open.read())
 
 if __name__ == "__main__":
-    test = collection.find({'subreddit': '4chan'})
-    for x in test:
-        print x
-else:
     print '''
                                                                                 
                                                                                 
@@ -162,7 +158,6 @@ else:
                                                                                 
     '''
     if len(sys.argv) == 5:
-        #crawl()
         seed = sys.argv[2]+" "+sys.argv[3]
         if sys.argv[4] == '4chan':
             print '''
