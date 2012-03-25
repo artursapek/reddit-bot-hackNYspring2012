@@ -136,6 +136,7 @@ def respond(permalink, text):
     read = json.dumps(req_open.read())
 
 if __name__ == "__main__":
+    count()
     print '''
                                                                                 
                                                                                 
