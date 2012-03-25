@@ -91,8 +91,8 @@ def drop_db():
 
 # Reddit functions
 
-def confirm(seed, subreddit = None):
-    comment = generate.gen(seed, subreddit)
+def confirm(seed, subreddits = None):
+    comment = generate.gen(seed, subreddits)
     print comment
     yn = raw_input("Wanna post this shit? Y/N: ")
     if yn.lower() == "y":
@@ -157,7 +157,7 @@ if __name__ == "__main__":
                                                                                 
                                                                                 
     '''
-    if len(sys.argv) == 5:
+    if len(sys.argv) >= 4:
         seed = sys.argv[2]+" "+sys.argv[3]
         if sys.argv[4] == '4chan':
             print '''
@@ -200,7 +200,10 @@ if __name__ == "__main__":
                                                                                 
                                                                                 
     '''
-        confirm(seed, sys.argv[4])
+        if len(sys.argv) > 4:
+            confirm(seed, sys.argv[4:])
+        else:
+            confirm(seed, None)
     else:
         print "Usage: python hackny_bot.py <url> <seed1> <seed2>"
 
