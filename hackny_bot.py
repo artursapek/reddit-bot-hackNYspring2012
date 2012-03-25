@@ -2,21 +2,17 @@ import reddit
 import pymongo
 
 #419 reddits
-N = 2
 
 def run():
+    global db 
     connection = pymongo.Connection('localhost', 27017)
-    global db = connection.new_database
+    db = connection.new_database
     r = reddit.Reddit("hackny_bot")
     r.login("bzzzz3","bzzzz")
     f = open("subreddits.txt")
     for sub in f.read().split():
         get_threads(sub, r)
     
-def get_reddit_id(url):
-    result = re.search('/comments/(.*?)/', url)
-    return result.group(1)
-
 def get_threads(sub, r):
     submissions = r.get_subreddit(sub).get_top(limit=10)
     try:
@@ -27,7 +23,8 @@ def get_threads(sub, r):
         for com in s.comments:
             try:
                 process_comments(com)
-            except:
+            except Exception as e:
+                print e
                 continue
         try:
             s = submissions.next()
@@ -38,22 +35,21 @@ def process_comments(com):
     if 'body' in com.__dict__.keys():
         if com.body == "":
             return
-        add_to_db(com_body)
+        markovify(com.body)
     else:
         print (process_comments(com.comments))
 
-def add_to_db(body):
-    new_comment = {'body': body}
-    collection = db.comments
-    collection.insert(new_comment)
-
 def markovify(body):
     words = body.split()
-    for i in xrange(0,len(words)):
-        if i == len(words) - N:
+    for i in xrange(0,len(words)-1):
+        if i == len(words) - 2:
             new_markov = {'prefix':words[i]+" "+words[i+1], 'suffix': None}
-        else:    
+        else: 
             new_markov = {'prefix':words[i]+" "+words[i+1], 'suffix': words[i+2]}
+        print new_markov
+        
+        collection = db.comments
+        collection.insert(new_markov)
 
 if __name__ == "__main__":
     run()
