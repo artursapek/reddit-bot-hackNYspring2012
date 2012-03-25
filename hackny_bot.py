@@ -1,6 +1,5 @@
 import reddit
 import pymongo
-
 #419 reddits
 
 connection = pymongo.Connection('localhost', 27017)
@@ -57,6 +56,12 @@ def generate_sentence(subject):
     
 
 # Reddit functions
+
+def generate_comment(seed):
+    comment = seed
+    collection = db.comments
+    while suffs is not None:
+        suffs = collection.find({prefix: seed})
 
 if __name__ == "__main__":
     run()
