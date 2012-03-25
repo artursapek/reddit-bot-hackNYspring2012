@@ -2,18 +2,19 @@ import reddit
 import pymongo
 #419 reddits
 
+connection = pymongo.Connection('localhost', 27017)
+db = connection.new_database
+collection = db.comments
+
 def run():
-    global db 
-    connection = pymongo.Connection('localhost', 27017)
-    db = connection.new_database
-    r = reddit.Reddit("hackny_bot")
-    r.login("bzzzz3","bzzzz")
+    r = reddit.Reddit("douche-bot v.0.1 alpha release")
+    r.login("douche-bot","hackny")
     f = open("subreddits.txt")
-    for sub in f.read().split():
+    for sub in f.read().split()[0:5]:
         get_threads(sub, r)
-    
+   
 def get_threads(sub, r):
-    submissions = r.get_subreddit(sub).get_top(limit=10)
+    submissions = r.get_subreddit(sub).get_top(limit=5)
     try:
         s = submissions.next()
     except StopIteration:
@@ -47,8 +48,11 @@ def markovify(body):
             new_markov = {'prefix':words[i]+" "+words[i+1], 'suffix': words[i+2]}
         print new_markov
         
-        collection = db.comments
-        collection.insert(new_markov)
+
+def add_to_db(post):
+    collection.insert(post)
+
+# Reddit functions
 
 def generate_comment(seed):
     comment = seed
