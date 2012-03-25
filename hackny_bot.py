@@ -136,10 +136,6 @@ def respond(permalink, text):
     read = json.dumps(req_open.read())
 
 if __name__ == "__main__":
-    test = collection.find({'subreddit': '4chan'})
-    for x in test:
-        print x
-else:
     print '''
                                                                                 
                                                                                 
