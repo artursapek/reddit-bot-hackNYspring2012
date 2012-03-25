@@ -1,6 +1,5 @@
 import reddit
 import pymongo
-
 #419 reddits
 
 def run():
@@ -50,6 +49,12 @@ def markovify(body):
         
         collection = db.comments
         collection.insert(new_markov)
+
+def generate_comment(seed):
+    comment = seed
+    collection = db.comments
+    while suffs is not None:
+        suffs = collection.find({prefix: seed})
 
 if __name__ == "__main__":
     run()
