@@ -5,13 +5,10 @@ db = connection.new_database
 
 collection = db.comments
 
-new_comment = {
-                'author': 'AndrewSmith1986',
-                'body': 'Wedep'
-              }
-collection.insert(new_comment)
+for i in range(1, 10):
+    post = { 'x': 10,
+             'y': i
+           }
+    collection.insert(post)
 
-print db.collection_names()
-
-    
 
