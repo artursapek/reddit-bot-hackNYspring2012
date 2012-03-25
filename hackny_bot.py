@@ -160,7 +160,7 @@ if __name__ == "__main__":
     '''
     if len(sys.argv) >= 4:
         seed = sys.argv[2]+" "+sys.argv[3]
-        if sys.argv[4] == '4chan':
+        if len(sys.argv)>4 and sys.argv[4] == '4chan':
             print '''
                                                                                          
                                                   ....                          
@@ -202,11 +202,9 @@ if __name__ == "__main__":
                                                                                 
     '''
         if len(sys.argv) > 4:
-            print 'subreddit'
             confirm(seed, sys.argv[4:])
         else:
-            print 'nope'
-            confirm(seed, None)
+            confirm(seed)
     else:
         print "Usage: python hackny_bot.py <url> <seed1> <seed2>"
 
