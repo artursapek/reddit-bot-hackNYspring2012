@@ -17,9 +17,9 @@ def crawl():
     r = reddit.Reddit("acid-trip-bot v.0.1 alpha release")
     r.login("acid-trip-bot","hackny")
     
-    f = open("subreddits.txt")
-    for sub in f.read().split()[240:290]:
-        get_threads(sub, r)
+#    f = open("subreddits.txt")
+#    for sub in f.read().split()[240:290]:
+    get_threads('4chan', r)
    
 def get_threads(sub, r):
     submissions = r.get_subreddit(sub).get_top(limit=40)
@@ -29,13 +29,13 @@ def get_threads(sub, r):
         return
     while s:
         for i, com in enumerate(s.comments):
-            process_comments(com)
+            process_comments(com, sub)
         try:
             s = submissions.next()
         except:
             return
 
-def process_comments(com):
+def process_comments(com, sub):
     if 'body' in com.__dict__.keys():
         if com.body == "":
             return
@@ -44,6 +44,7 @@ def process_comments(com):
             print entries
             for entry in entries:
                 if collection.find({'prefix': entry['prefix'], 'suffix': entry['suffix']}).count() == 0 and len(entry['prefix']) + len(entry['suffix']) < 40:
+                    entry['subreddit'] = sub
                     add_to_db(entry)
                     print '.'
         except:
@@ -135,7 +136,9 @@ def respond(permalink, text):
     read = json.dumps(req_open.read())
 
 if __name__ == "__main__":
-    count()
+    test = collection.find({'subreddit': '4chan'})
+    for x in test:
+        print x
 else:
     print '''
                                                                                 
@@ -158,9 +161,50 @@ else:
                                                                                 
                                                                                 
     '''
-    if len(sys.argv) == 4:
+    if len(sys.argv) == 5:
         #crawl()
         seed = sys.argv[2]+" "+sys.argv[3]
+        if sys.argv[4] == '4chan':
+            print '''
+                                                                                         
+                                                  ....                          
+                                                ,88OO8O=.                       
+                .+ZOOOOZ?..                   .=8Z,,,,=88,.  ...                
+            ..$88?::,,,:+88Z,                .~8$,~~~~:,O8~.O88888+.            
+           .:88~:~======~:,7OO,.            ..OO:~=====~,7888,,:,+8O,.          
+           .O8.:===========::88~.            ~O7:========~7O+~===::88.          
+           .:88I~~=+++++++++=:7OI..          =8I:++++++++++=++++++:+8?..        
+            ..+8OO?+?????????+~?8$.         .=8I~+????????????????~=O$..        
+          .=88Z?==?IIIIIIIIIII?=?87.        .=87~?IIIIIIIIIIIIIII?~I8=          
+        .$8O+~?I777777777777777I~$8=        .~O$=I7777777777777I?~I8I.          
+       .$O?7OOOOOOO8OOOOOOOOOOOOO?O8.       ..OZIOOOOOOOOO8OOOO$?O8?.           
+      ..ZO+IZOOOOOOOOOOOOOOOOOOOO$+8O.      . O8?ZOOOOOOOOOOZ?IO87..            
+        .O8O?+I$ZZZZOOOOZZZZZ$7I?+~$O~        =87IZOOOOOZ$??Z887..              
+         ..:Z88OOZZIIIIIIZZOOO888OZ7,.        .88~7$7?+=$O8O?...                
+            .....,:+++++=:,.......            .=87=ZO88O~...                    
+                                              ..+8?:....                        
+                                                 .                              
+                                                                                
+                                                                                
+                            . .~~.                                              
+                        ..,I88O78I.         .. ....,,::~~~~::,,....             
+                    ...=88OI.,,,?8=.      .=88888OOZZ$$7III$$ZZO888+.. .        
+                   .=O8Z:,:~~~~~,ZO,     ..$O:.,:::~~~~~~~~~~~::,,:I88I..       
+                ..788=,~========:=8I.      ~8I,====================~,:O8.       
+               .=88=:===+++=+====,O8..     .O8:~===+++++====++==+===~,$8.       
+              .Z8I:=+++++++++++++~~8Z       .8O,=+++++++++++++++++~:I88:.       
+            ..O8~=???????????????+~ZO.      .=O7~+????????????+~~7O88, .        
+            .?8I7OOOOOOOOOOOOOOOOO7$O~      ..I877OOOOOOOOOOOZO8O+..            
+            .I8I$OOOOOOOOOOOOOOOOO$7O?        .?8$IOOOOOOOOOOOZ$O8O.            
+            .=87IOOOOOOOOOOOOOOOOO$7O?          =8O+ZOOOOOOOOOOO?+OI            
+            ..$8I7OOOO$OOZ$OOOOOOO7$8+           .O8Z?$OOOOOOOO7+O8.            
+              .$OZ?7$+$8I8O?ZOOOOZ?Z8.             :O8OI??????788$.             
+                .$88888:.,887IZOO?78~.              ..:7Z888OZI,                
+                   ..      :O8OIIO8=                                            
+                             .,++:.                                             
+                                                                                
+                                                                                
+    '''
         confirm(seed)
     else:
         print "Usage: python hackny_bot.py <url> <seed1> <seed2>"
