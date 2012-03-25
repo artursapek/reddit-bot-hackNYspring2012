@@ -2,8 +2,6 @@ import reddit
 import pymongo
 import re
 
-#419 reddits
-
 connection = pymongo.Connection('localhost', 27017)
 db = connection.new_database
 collection = db.comments

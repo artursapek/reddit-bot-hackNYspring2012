@@ -1,4 +1,5 @@
 import pymongo
+import random
 
 def generate_comment(seed):
     comment = seed
@@ -14,4 +15,3 @@ def get_suffix(prefix):
     db = connection.new_database
     collection = db.comments
     return random.choice(collection.find({prefix: prefix}))
-    
