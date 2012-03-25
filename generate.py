@@ -45,10 +45,4 @@ def prettify(comment):
         comment += "?"
     return comment[0].capitalize() + comment[1:].lower()
 
-def exasperation():
-    no_vowels = random.choice(range(1, 3))
-    no_consonants = random.choice(range(3, 10))
-    vow = 'aeiou'
-    cons = 'bcdfghjklmnpqrtvwxz'
-    chosen_cons = random.choice(cons.split(''))
-    chosen_vow = random.choice(vow.split(''))
+
