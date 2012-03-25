@@ -1,6 +1,5 @@
 import reddit
 import pymongo
-#419 reddits
 
 connection = pymongo.Connection('localhost', 27017)
 db = connection.new_database
