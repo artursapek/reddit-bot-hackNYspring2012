@@ -1,13 +1,14 @@
 import reddit
 import pymongo
+import re
 
 connection = pymongo.Connection('localhost', 27017)
 db = connection.new_database
 collection = db.comments
 
 def run():
-    r = reddit.Reddit("douche-bot v.0.1 alpha release")
-    r.login("douche-bot","hackny")
+    r = reddit.Reddit("acid-trip-bot v.0.1 alpha release")
+    r.login("acid-trip-bot","hackny")
     f = open("subreddits.txt")
     for sub in f.read().split()[0:5]:
         get_threads(sub, r)
@@ -19,12 +20,8 @@ def get_threads(sub, r):
     except StopIteration:
         return
     while s:
-        for com in s.comments:
-            try:
-                process_comments(com)
-            except Exception as e:
-                print e
-                continue
+        for i, com in enumerate(s.comments):
+            process_comments(com)
         try:
             s = submissions.next()
         except:
@@ -34,7 +31,12 @@ def process_comments(com):
     if 'body' in com.__dict__.keys():
         if com.body == "":
             return
-        markovify(com.body)
+        print com.body
+
+        try:
+            add_to_db(markovify(com.body))
+        except:
+            pass
     else:
         print (process_comments(com.comments))
 
@@ -45,15 +47,34 @@ def markovify(body):
             new_markov = {'prefix':words[i]+" "+words[i+1], 'suffix': None}
         else: 
             new_markov = {'prefix':words[i]+" "+words[i+1], 'suffix': words[i+2]}
-        print new_markov
+        return new_markov
 
 def add_to_db(post):
     collection.insert(post)
 
-def generate_sentence(subject):
-    
+def sanitize_comment(comment):
+    if len(comment.split()) < 3:
+        return None
+    while True:
+        link = re.search(r'\[(?P<text>.*)\]\(http://.*\)', comment, re.I)
+        if not link:
+            break
+        comment = comment.replace(link.group(0), link.group('text'))
+    comment = comment.strip()
+    comment = ''.join(re.findall(r'[\w\d\s]', comment))
+    return comment 
 
-# Reddit functions
+def read_db():
+    for i, x in enumerate(collection.find()):
+        print x
+
+def drop_db():
+    collection.drop()
+
+if __name__ == "__main__":
+    run()
+
+    collection.drop()
 
 if __name__ == "__main__":
     run()
