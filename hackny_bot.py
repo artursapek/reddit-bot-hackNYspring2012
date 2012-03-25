@@ -157,7 +157,7 @@ if __name__ == "__main__":
             respond(sys.argv[1], comment)
         else:
             new_seed = raw_input("New seed? (blank=same) ")
-            if len(seed.split()) == 2:
+            if len(new_seed.split()) == 2:
                 comment = generate.gen(new_seed)
             else:
                 comment = generate.gen(seed)
