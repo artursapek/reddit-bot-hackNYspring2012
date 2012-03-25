@@ -1,16 +1,19 @@
 import reddit
 import pymongo
 import re
+from mechanize import Browser
+from BeautifulSoup import BeautifulSoup
+import urllib2
 
 connection = pymongo.Connection('localhost', 27017)
 db = connection.new_database
 collection = db.comments
 
-def run():
+def crawl():
     r = reddit.Reddit("acid-trip-bot v.0.1 alpha release")
     r.login("acid-trip-bot","hackny")
     f = open("subreddits.txt")
-    for sub in f.read().split()[0:20]:
+    for sub in f.read().split()[100:140]:
         get_threads(sub, r)
    
 def get_threads(sub, r):
@@ -38,12 +41,10 @@ def process_comments(com):
                 if collection.find({'prefix': entry['prefix'], 'suffix': entry['suffix']}).count() == 0 and len(entry['prefix']) + len(entry['suffix']) < 40:
                     add_to_db(entry)
                     print '.'
-                else:
-                    print 'OMITTED'
         except:
             pass
     else:
-        print 'shit'
+        pass
 
 def markovify(body):
     dicts = [ ]
@@ -82,6 +83,20 @@ def test():
 def drop_db():
     collection.drop()
 
+# Reddit functions
+
+def respond(permalink):
+    br = Browser()
+    br.addheaders = [('User-agent', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/14.0.835.202 Safari/535.1')]
+    soup = BeautifulSoup(br.open(permalink).read())
+    root_comment = soup.find('form', attrs={'class': 'usertext border'})
+    thing_id = root_comment.find('input', attrs={'name': 'thing_id'})['value']
+
+    print thing_id
+
+    login_cookie = urllib2.Request('www.reddit.com/api/login/username', {'user': 'acid-trip-bot', 'passwd': 'hackny'})
+
 if __name__ == "__main__":
-    test()
+#    crawl()
+    respond('http://www.reddit.com/r/funny/comments/pa3dh/woody_harrelsons_publicist/c3nqfnv')
 
